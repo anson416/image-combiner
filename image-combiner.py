@@ -55,15 +55,6 @@ def combine_images(
     return output_img
 
 
-# imgs = [
-#     "images/Lycoris_Teaser_1500x2080.jpg",
-#     "images/Lycoris_Twitter_01_1000x994.jpg",
-#     "images/Lycoris_Twitter_04_1000x707.jpg",
-#     "images/Lycoris_Twitter_05_676x1000.jpg",
-#     "images/Lycoris_Twitter_06_1000x707.jpg",
-# ]
-# combine(imgs, 2, 2, cell_size=(2000, 2000), fill=True, output_path="output.jpeg")
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Combine images in grid.")
     parser.add_argument(
