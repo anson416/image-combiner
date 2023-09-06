@@ -6,16 +6,41 @@ from PIL import Image, ImageOps
 
 
 def combine_images(
-    img_paths: Union[list[str], tuple[str]],
+    img_paths: Union[list[str], tuple[str, ...]],
     n_rows: Optional[int] = None,
     n_cols: Optional[int] = None,
     resize: bool = False,
     fill: bool = False,
-    background: Union[list[int], tuple[int]] = (0, 0, 0),
-    cell_size: Optional[Union[list[int], tuple[int]]] = None,
+    background: tuple[int, int, int] = (0, 0, 0),
+    cell_size: Optional[tuple[int, int]] = None,
     output_path: Optional[str] = None,
     show: bool = False,
 ) -> Image.Image:
+    """
+    Combine images in grid.
+
+    Args:
+        img_paths (Union[list[str], tuple[str, ...]]): Paths to images to be combined
+        n_rows (Optional[int], optional): Number of rows in the grid. Cannot be None if `n_cols` is None. Defaults to None.
+        n_cols (Optional[int], optional): Number of columns in the grid. Cannot be None if `n_rows` is None. Defaults to None.
+        resize (bool, optional): If True, resize each image to match at least one dimension of a cell's size. Defaults to False.
+        fill (bool, optional): If True, crop each image to fill an entire cell. Used only when `resize` is True. Defaults to False.
+        background (tuple[int, int, int], optional): Background color (RGB). Defaults to (0, 0, 0).
+        cell_size (Optional[tuple[int, int]], optional): Size (width, height) of each cell. Defaults to None.
+        output_path (Optional[str], optional): If not None, the combined image will be saved as `output_path`. Defaults to None.
+        show (bool, optional): If True, show the combined image. Defaults to False.
+
+    Returns:
+        Image.Image: The combined image
+
+    Raises:
+        AssertionError: Raise if `n_rows` is not None and `n_rows` <= 0
+        AssertionError: Raise if `n_cols` is not None and `n_cols` <= 0
+        AssertionError: Raise if both `n_rows` and `n_cols` are not None and `n_rows` * `n_cols` < len(`img_paths`)
+        AssertionError: Raise if any value in `background` is not in [0, 255]
+        AssertionError: Raise if `cell_size` is not None and any value in `cell_size` is not greater than 0
+    """
+
     assert n_rows or n_cols, "n_rows and n_cols cannot be both None"
     if n_rows:
         assert n_rows > 0, "n_rows must be positive integer"
@@ -56,7 +81,10 @@ def combine_images(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Combine images in grid.")
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        description="Combine images in grid.",
+    )
     parser.add_argument(
         "img_paths", type=str, nargs="+",
         help="Paths to images to be combined",
