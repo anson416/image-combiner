@@ -49,10 +49,10 @@ def combine_images(
     if n_rows and n_cols:
         assert n_rows * n_cols >= len(img_paths), "# of cells (n_rows * n_cols) must be no less than # of images"
     for color in background:
-        assert 0 <= color <= 255, "Each value in background (RGB) must be in [0, 255]"
+        assert 0 <= color <= 255, "Each value in background (RGB) must be an integer in [0, 255]"
     if cell_size:
         for size in cell_size:
-            assert size > 0, "Each value in cell_size (width, height) must be positive integers"
+            assert size > 0, "Each value in cell_size (width, height) must be a positive integer"
 
     images = [Image.open(img) for img in img_paths]
     nc = math.ceil(len(img_paths) / n_rows) if n_rows and not n_cols else n_cols
