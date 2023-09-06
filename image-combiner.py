@@ -21,8 +21,8 @@ def combine_images(
 
     Args:
         img_paths (Union[list[str], tuple[str, ...]]): Paths to images to be combined
-        n_rows (Optional[int], optional): Number of rows in the grid. Cannot be None if `n_cols` is None. Defaults to None.
-        n_cols (Optional[int], optional): Number of columns in the grid. Cannot be None if `n_rows` is None. Defaults to None.
+        n_rows (Optional[int], optional): Number of rows in the grid. Defaults to None.
+        n_cols (Optional[int], optional): Number of columns in the grid. Defaults to None.
         resize (bool, optional): If True, resize each image to match at least one dimension of a cell's size. Defaults to False.
         fill (bool, optional): If True, crop each image to fill an entire cell. Used only when `resize` is True. Defaults to False.
         background (tuple[int, int, int], optional): Background color (RGB). Defaults to (0, 0, 0).
@@ -41,7 +41,7 @@ def combine_images(
         AssertionError: Raise if `cell_size` is not None and any value in `cell_size` is not greater than 0
     """
 
-    assert n_rows or n_cols, "n_rows and n_cols cannot be both None"
+    # Check arguments
     if n_rows:
         assert n_rows > 0, "n_rows must be positive integer"
     if n_cols:
@@ -54,13 +54,23 @@ def combine_images(
         for size in cell_size:
             assert size > 0, "Each value in cell_size (width, height) must be a positive integer"
 
+    # Read images from `img_paths` and store them to a list called `images`
     images = [Image.open(img) for img in img_paths]
-    nc = math.ceil(len(img_paths) / n_rows) if n_rows and not n_cols else n_cols
-    nr = math.ceil(len(img_paths) / n_cols) if n_cols and not n_rows else n_rows
+
+    # Compute `n_rows` and/or `n_cols` if necessary
+    if not (n_rows or n_cols):
+        n_rows = n_cols = math.ceil(math.sqrt(len(images)))
+    elif n_cols and not n_rows:
+        n_rows = math.ceil(len(img_paths) / n_cols)
+    elif n_rows and not n_cols:
+        n_cols = math.ceil(len(img_paths) / n_rows)
+
+    # Create a new blank image called `output_img`
     cell_width = cell_size[0] if cell_size else max([img.size[0] for img in images])
     cell_height = cell_size[1] if cell_size else max([img.size[1] for img in images])
-    output_img = Image.new("RGB", (nc * cell_width, nr * cell_height), background)
+    output_img = Image.new("RGB", (n_cols * cell_width, n_rows * cell_height), background)
 
+    # Put all images in `images` to `output_img`
     for idx, img in enumerate(images):
         if resize:
             if fill:
@@ -68,12 +78,15 @@ def combine_images(
             else:
                 img = ImageOps.contain(img, (cell_width, cell_height))
         width, height = img.size
-        x = (idx % nc) * cell_width + (cell_width - width) // 2
-        y = (idx // nc) * cell_height + (cell_height - height) // 2
+        x = (idx % n_cols) * cell_width + (cell_width - width) // 2
+        y = (idx // n_cols) * cell_height + (cell_height - height) // 2
         output_img.paste(img, (x, y, x + width, y + height))
 
+    # Save the combined image
     if output_path:
         output_img.save(output_path)
+
+    # Show the combined image
     if show:
         output_img.show()
 
