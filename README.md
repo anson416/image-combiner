@@ -34,16 +34,16 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
   -nr N_ROWS, --n_rows N_ROWS
-                        Number of rows in the grid
+                        Number of rows in the grid (default: None)
   -nc N_COLS, --n_cols N_COLS
-                        Number of columns in the grid
-  -r, --resize          Resize each image to match at least one dimension of a cell's size
-  -f, --fill            Crop each image to fill an entire cell (used only when resize is True)
+                        Number of columns in the grid (default: None)
+  -r, --resize          Resize each image to match at least one dimension of a cell's size (default: False)
+  -f, --fill            Crop each image to fill an entire cell (used only when resize is True) (default: False)
   -b BACKGROUND BACKGROUND BACKGROUND, --background BACKGROUND BACKGROUND BACKGROUND
-                        Background color (RGB)
+                        Background color (RGB) (default: (0, 0, 0))
   -cs CELL_SIZE CELL_SIZE, --cell_size CELL_SIZE CELL_SIZE
-                        Size (width, height) of each cell
+                        Size (width, height) of each cell (default: None)
   -o OUTPUT_PATH, --output_path OUTPUT_PATH
-                        Output path of the combined image
-  -s, --show            Show the combined image
+                        Output path of the combined image (default: None)
+  -s, --show            Show the combined image (default: False)
 ```
