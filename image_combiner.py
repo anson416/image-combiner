@@ -84,7 +84,7 @@ def combine_images(
         elif resize or (img.size[0] > cell_width or img.size[1] > cell_height):
             img = ImageOps.contain(img, (cell_width, cell_height))
         
-        # Paste image
+        # Paste image in the center of the cell
         width, height = img.size
         x = (idx % n_cols) * cell_width + (cell_width - width) // 2
         y = (idx // n_cols) * cell_height + (cell_height - height) // 2
