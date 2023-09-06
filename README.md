@@ -20,6 +20,8 @@ combine_images(
 )
 ```
 
+Return a `PIL.Image.Image` object, which represents the combined image.
+
 ### CLI
 
 ```text
