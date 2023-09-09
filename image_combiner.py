@@ -1,17 +1,17 @@
 import argparse
 import math
-from typing import Optional, Union
+from typing import List, Optional, Tuple, Union
 
 from PIL import Image, ImageOps
 
 
 def combine_images(
-    img_paths: Union[list[str], tuple[str, ...]],
+    img_paths: Union[List[str], Tuple[str, ...]],
     n_rows: Optional[int] = None,
     n_cols: Optional[int] = None,
     resize: bool = False,
     fill: bool = False,
-    background: tuple[int, int, int] = (0, 0, 0),
+    background: Tuple[int, int, int] = (0, 0, 0),
     cell_width: Optional[int] = None,
     cell_height: Optional[int] = None,
     output_path: Optional[str] = None,
@@ -21,12 +21,12 @@ def combine_images(
     Combine images in grid.
 
     Args:
-        img_paths (Union[list[str], tuple[str, ...]]): Paths to images to be combined
+        img_paths (Union[List[str], Tuple[str, ...]]): Paths to images to be combined
         n_rows (Optional[int], optional): Number of rows in the grid. Defaults to None.
         n_cols (Optional[int], optional): Number of columns in the grid. Defaults to None.
         resize (bool, optional): If True, resize each image to match at least one dimension of a cell's size. Defaults to False.
         fill (bool, optional): If True, crop each image to fill an entire cell. Defaults to False.
-        background (tuple[int, int, int], optional): Background color (RGB). Defaults to (0, 0, 0).
+        background (Tuple[int, int, int], optional): Background color (RGB). Defaults to (0, 0, 0).
         cell_width (Optional[int], optional): Width of each cell in the grid. Defaults to None.
         cell_height (Optional[int], optional): Height of each cell in the grid. Defaults to None.
         output_path (Optional[str], optional): If not None, the combined image will be saved as `output_path`. Defaults to None.
